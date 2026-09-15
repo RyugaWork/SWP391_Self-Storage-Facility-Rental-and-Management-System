@@ -1,36 +1,31 @@
+using BackendAPI.Utils;
+using BackendAPI.Utils.DataBase;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendAPI
 {
-    public class Program
+    internal class Program
     {
+
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            SqlDBProfile dbProfile = new SqlDBProfile();
+            //    "localhost",
+            //    "demoFRMS",
+            //    "sa",
+            //    "12345"
+            //);
 
-            // Add services to the container.
+            SqlDbService dbService = new SqlDbService();
+            dbService.SetProfile(dbProfile);
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            FRMS application = new(
+                WebApplication.CreateBuilder(args),
+                dbService
+            );
 
-            var app = builder.Build();
+            application.Run();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
         }
     }
 }
