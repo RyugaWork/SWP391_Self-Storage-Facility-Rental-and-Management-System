@@ -1,4 +1,6 @@
 ﻿using BackendAPI.Utils.DataBase;
+using BackendAPI.Utils.Email;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace BackendAPI; 
 public interface IProgram {
@@ -9,7 +11,7 @@ public interface IProgram {
 
 public class FRMS : IProgram {
     public WebApplicationBuilder builder;
-    public WebApplication app;
+    public WebApplication? app;
     public IDbService db;
 
     public FRMS(WebApplicationBuilder builder, IDbService db) : base() {
@@ -25,6 +27,7 @@ public class FRMS : IProgram {
         builder.Services.AddSwaggerGen();
         // Add SQL Server Connection
         builder.Services.AddDbContext<AppDbContext>(opt => db.Configure(opt));
+        builder.Services.AddTransient<IEmailSender,EmailProvider>();
     }
 
     public void AddConfig() {

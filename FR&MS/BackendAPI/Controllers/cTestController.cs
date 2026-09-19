@@ -1,6 +1,7 @@
 ﻿using BackendAPI.Models;
 using BackendAPI.Utils.DataBase;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,16 +13,18 @@ namespace BackendAPI.Controllers;
 [Route("api/[controller]")]
 public class cTestController : ControllerBase {
 
-    private readonly AppDbContext _db;
-    private readonly ILogger<cTestController> _logger;
+    private readonly AppDbContext _db;                  // Database
+    private readonly ILogger<cTestController> _logger;  // Logger
+    private readonly IEmailSender _emailSender;         // Email
     /// <summary>
     /// Initializes a new instance of the cTestController.
     /// </summary>
     /// <param name="db">The application database context.</param>
     /// <param name="logger">The logger used to record controller activities and errors.</param>
-    public cTestController(AppDbContext db, ILogger<cTestController> logger) {
+    public cTestController(AppDbContext db, ILogger<cTestController> logger, IEmailSender email) {
         _db = db;
         _logger = logger;
+        _emailSender = email;
     }
 
     /// <summary>
